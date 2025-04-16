@@ -1,4 +1,4 @@
-# Copyright (C) 2024 ETAS 
+# Copyright (C) 2025 Contributors to the Eclipse Foundation 
 # 
 # This program and the accompanying materials are made available under the
 # terms of the Apache License, Version 2.0 which is available at
@@ -13,13 +13,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Container image that runs your code
-FROM alpine:3.10
+FROM alpine:3.21
 
-# sh scripting is too painful
-RUN apk add --no-cache bash
+# sh scripting is too painful, and we need jq for json output
+RUN apk add --no-cache bash jq
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
-COPY manifest-toml.sh /manifest-toml.sh
+COPY quevee_lib/ /quevee_lib/
+COPY manifest_v2.sh /manifest_v2.sh
 
 # Code file to execute when the docker container starts up (`entrypoint.sh`)
-ENTRYPOINT ["/manifest-toml.sh"]
+ENTRYPOINT ["/manifest_v2.sh"]

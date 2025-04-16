@@ -1,28 +1,40 @@
 #!/bin/sh -l
 
-# Copyright (C) 2024 ETAS 
-# 
-# This program and the accompanying materials are made available under the
-# terms of the Apache License, Version 2.0 which is available at
-# https://www.apache.org/licenses/LICENSE-2.0.
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-# License for the specific language governing permissions and limitations
-# under the License.
-# 
-# SPDX-License-Identifier: Apache-2.0
+# ********************************************************************************
+#  Copyright (c) 2025 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************/
 
-export GITHUB_OUTPUT="manifest.toml"
+export RELATIVE_PATH="."
+export INPUT_LOG_LEVEL=2
 
 export GITHUB_SERVER_URL=https://github.com
-export GITHUB_REPOSITORY=eclipse-dash/quevee
-export GITHUB_REF_NAME=main
+export GITHUB_REPOSITORY=eclipse-uprotocol/up-rust
+export GITHUB_REF_NAME=v0.5.0
+export GITHUB_ACTION=quevee_v2
 export GITHUB_WORKFLOW_SHA=e69b6ff8f67e0d2edfd0968ebc5f99d7e8d763c7
 
-export INPUT_ARTIFACTS_README="https://some.example.url,https://other.example.url"
-export INPUT_ARTIFACTS_REQUIREMENTS="./Another/URL,https://another.org/example/artifact.bz2"
-export INPUT_ARTIFACTS_DOCUMENTATION="http://first.doc.com/doc/url,https://another.doc.com/example/docs.zip"
+export INPUT_RELEASE_URL=https://github.com/eclipse-uprotocol/up-rust/releases/tag/v0.5.0
+export INPUT_PURL_TYPE="cargo"
 
-./manifest-toml.sh
+read -r -d '' INPUT_ARTIFACTS_README <<'EOF'
+https://example.com/page1|Name1|Example page 1|tag1,tag2,tag3
+https://example.com/page2|Name2|Example page 2|tag2,tag4
+EOF
+export INPUT_ARTIFACTS_README
+
+read -r -d '' INPUT_ARTIFACTS_REQUIREMENTS <<'EOF'
+https://requirements.com/page1|ReqName1|Req Example page 1|rtag1,rtag2,rtag3
+https://requirements.com/page2|ReqName2|Req Example page 2|rtag2,rtag4
+EOF
+export INPUT_ARTIFACTS_REQUIREMENTS
+
+./manifest_v2.sh "$@"
