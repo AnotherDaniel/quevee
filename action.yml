@@ -1,4 +1,4 @@
-# Copyright (C) 2024 ETAS 
+# Copyright (C) 2025 Contributors to the Eclipse Foundation 
 # 
 # This program and the accompanying materials are made available under the
 # terms of the Apache License, Version 2.0 which is available at
@@ -11,40 +11,63 @@
 # under the License.
 # 
 # SPDX-License-Identifier: Apache-2.0
+
 name: 'quevee'
 description: 'QUality-EVEnt Engine for collecting quality-related build and release artifacts'
 branding:
   icon: 'award'
   color: 'green'
 inputs:
-  release_url:
-    description: 'URL of the release this manifest refers to'
-    required: false
   artifacts_documentation:
-    description: 'Comma-separated list of URLs of documentation artifacts'
+    description: 'Multi-line list of documentation artifacts, each line must be in the form <url>|<name>|<description>|<tags>)'
     required: false
   artifacts_license:
-    description: 'Comma-separated list of URLs containing licensing information'
+    description: 'Multi-line list of URLs containing licensing information, each line must be in the form <url>|<name>|<description>|<tags>)'
     required: false
   artifacts_readme:
-    description: 'Comma-separated list of URLs of readme files'
+    description: 'Multi-line list of URLs of readme files, each line must be in the form <url>|<name>|<description>|<tags>)'
     required: false
   artifacts_requirements:
-    description: 'Comma-separated list of URLs of requirement files'
+    description: 'Multi-line list of URLs of requirement files, each line must be in the form <url>|<name>|<description>|<tags>)'
     required: false
   artifacts_testing:
-    description: 'Comma-separated list of URLs of test results'
+    description: 'Multi-line list of URLs of test results, each line must be in the form <url>|<name>|<description>|<tags>)'
+    required: false
+  json_filename:
+    description: 'File name of json manifest output'
+    required: false
+  log_level:
+    description: 'Set log level, valid values are 0 (ERROR), 1 (WARN), 2 (INFO, default), or 3 (DEBUG)'
+    required: false
+  purl_namespace:
+    description: 'Provides the package URL (PURL) namespace; e.g. the user or organization in case of a github-based package'
+    required: false
+  purl_type:
+    description: 'Provides the package URL (PURL) type; e.g. "cargo" for a Rust component (defaults to "undefined")'
+    required: false
+  release_url:
+    description: 'URL of the release this manifest refers to'
+    required: true
+  toml_filename:
+    description: 'File name of toml manifest output'
     required: false
 outputs:
   manifest_file:
     description: 'Process artifacts manifest file name'
+  manifest_file_v2:
+    description: 'Process artifacts extended manifest file name'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.release_url }}
     - ${{ inputs.artifacts_documentation }}
     - ${{ inputs.artifacts_license }}
     - ${{ inputs.artifacts_readme }}
     - ${{ inputs.artifacts_requirements }}
     - ${{ inputs.artifacts_testing }}
+    - ${{ inputs.log_level }}
+    - ${{ inputs.json_filename }}
+    - ${{ inputs.toml_filename }}
+    - ${{ inputs.purl_namespace }}
+    - ${{ inputs.purl_type }}
+    - ${{ inputs.release_url }}
